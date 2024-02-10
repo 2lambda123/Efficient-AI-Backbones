@@ -160,6 +160,20 @@ _C.LOCAL_RANK = 0
 
 
 def _update_config_from_file(config, cfg_file):
+    """Updates the given config with the values from the provided YAML config file.
+    Parameters:
+        - config (Config): The config to be updated.
+        - cfg_file (str): The path to the YAML config file.
+    Returns:
+        - None: The function does not return anything.
+    Processing Logic:
+        - Defrost the config.
+        - Open the YAML config file.
+        - Load the YAML config file.
+        - For each config in the BASE section, recursively call the function to update the config.
+        - Print a message indicating the config file being merged.
+        - Freeze the config."""
+    
     config.defrost()
     with open(cfg_file, 'r') as f:
         yaml_cfg = yaml.load(f, Loader=yaml.SafeLoader)
@@ -175,6 +189,20 @@ def _update_config_from_file(config, cfg_file):
 
 
 def update_config(config, args):
+    """Update the configuration based on the arguments provided.
+    Parameters:
+        - config (dict): Dictionary containing the configuration settings.
+        - args (argparse.Namespace): Object containing the arguments provided by the user.
+    Returns:
+        - None: This function does not return anything, it only updates the configuration dictionary.
+    Processing Logic:
+        - Update the configuration from a file.
+        - Merge the configuration with any additional arguments provided.
+        - Update specific configuration settings based on the arguments provided.
+        - Set the local rank for distributed training.
+        - Set the output folder for the configuration.
+        - Freeze the configuration to prevent further updates."""
+    
     _update_config_from_file(config, args.cfg)
 
     config.defrost()
